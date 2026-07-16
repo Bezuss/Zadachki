@@ -21,6 +21,7 @@ public class SlidingWindowMaximum {
     public static int[] maxSlidingWindow(int[] nums, int k) {
         if (nums == null || nums.length == 0 || k <= 0) return new int[0];
         int n = nums.length;
+        if (k > n) k = n;
         int[] result = new int[n - k + 1];
         Deque<Integer> deque = new ArrayDeque<>();
         int idx = 0;
@@ -40,18 +41,26 @@ public class SlidingWindowMaximum {
     }
 
     public static void main(String[] args) {
-        int[] nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
-        int k1 = 3;
-        System.out.println(Arrays.toString(maxSlidingWindowBrute(nums1, k1)));
-        System.out.println(Arrays.toString(maxSlidingWindow(nums1, k1)));
+        int[][] testArrays = {
+            {1, 3, -1, -3, 5, 3, 6, 7},
+            {7, 6, 5, 4, 3, 2, 1},
+            {9, 11},
+            {4, -2},
+            {1},
+            {5, 5, 5, 5, 5},
+            {7, 2, 4}
+        };
+        int[] ks = {3, 3, 2, 1, 1, 3, 2};
 
-        int[] nums2 = {7, 6, 5, 4, 3, 2, 1};
-        int k2 = 3;
-        System.out.println(Arrays.toString(maxSlidingWindowBrute(nums2, k2)));
-        System.out.println(Arrays.toString(maxSlidingWindow(nums2, k2)));
-
-        int[] nums3 = {1};
-        int k3 = 1;
-        System.out.println(Arrays.toString(maxSlidingWindow(nums3, k3)));
+        for (int t = 0; t < testArrays.length; t++) {
+            int[] nums = testArrays[t];
+            int k = ks[t];
+            int[] brute = maxSlidingWindowBrute(nums, k);
+            int[] fast = maxSlidingWindow(nums, k);
+            System.out.println("nums=" + Arrays.toString(nums) + " k=" + k);
+            System.out.println("  brute = " + Arrays.toString(brute));
+            System.out.println("  fast  = " + Arrays.toString(fast));
+            System.out.println("  match = " + Arrays.equals(brute, fast));
+        }
     }
 }
