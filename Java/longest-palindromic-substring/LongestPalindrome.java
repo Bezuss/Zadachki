@@ -4,24 +4,20 @@ public class LongestPalindrome {
         if (s == null || s.length() == 0) return "";
         String best = "";
         for (int i = 0; i < s.length(); i++) {
-            for (int j = i; j < s.length(); j++) {
-                String sub = s.substring(i, j + 1);
-                if (isPalindrome(sub) && sub.length() > best.length()) {
-                    best = sub;
-                }
-            }
+            String odd = expand(s, i, i);
+            if (odd.length() > best.length()) best = odd;
+            String even = expand(s, i, i + 1);
+            if (even.length() > best.length()) best = even;
         }
         return best;
     }
 
-    static boolean isPalindrome(String s) {
-        int lo = 0, hi = s.length() - 1;
-        while (lo < hi) {
-            if (s.charAt(lo) != s.charAt(hi)) return false;
-            lo++;
-            hi--;
+    static String expand(String s, int lo, int hi) {
+        while (lo >= 0 && hi < s.length() && s.charAt(lo) == s.charAt(hi)) {
+            lo--;
+            hi++;
         }
-        return true;
+        return s.substring(lo + 1, hi);
     }
 
     public static void main(String[] args) {
