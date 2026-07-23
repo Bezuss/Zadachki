@@ -31,5 +31,8 @@ public class LongestPalindrome {
         System.out.println(longestPalindrome("cbbd"));
         System.out.println(longestPalindrome("a"));
         System.out.println(longestPalindrome(""));
+        System.out.println(longestPalindrome("racecarxyz"));
+        System.out.println(longestPalindrome("aaaaaaa"));
+        System.out.println(longestPalindrome("ac"));
     }
 }
