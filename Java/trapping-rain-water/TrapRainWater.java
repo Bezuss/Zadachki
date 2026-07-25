@@ -1,24 +1,7 @@
 public class TrapRainWater {
 
-    public static int trapBrute(int[] height) {
-        int n = height.length;
-        int total = 0;
-        for (int i = 0; i < n; i++) {
-            int leftMax = 0;
-            for (int j = 0; j <= i; j++) {
-                leftMax = Math.max(leftMax, height[j]);
-            }
-            int rightMax = 0;
-            for (int j = i; j < n; j++) {
-                rightMax = Math.max(rightMax, height[j]);
-            }
-            total += Math.min(leftMax, rightMax) - height[i];
-        }
-        return total;
-    }
-
     public static int trap(int[] height) {
-        if (height == null || height.length == 0) return 0;
+        if (height == null || height.length < 3) return 0;
         int left = 0, right = height.length - 1;
         int leftMax = 0, rightMax = 0;
         int total = 0;
@@ -43,8 +26,17 @@ public class TrapRainWater {
     }
 
     public static void main(String[] args) {
-        int[] h = {0,1,0,2,1,0,1,3,2,1,2,1};
-        System.out.println(trapBrute(h));
-        System.out.println(trap(h));
+        int[][] tests = {
+            {0,1,0,2,1,0,1,3,2,1,2,1},
+            {4,2,0,3,2,5},
+            {},
+            {1},
+            {5,4,3,2,1},
+            {1,2,3,4,5},
+            {2,0,2}
+        };
+        for (int[] t : tests) {
+            System.out.println(java.util.Arrays.toString(t) + " -> " + trap(t));
+        }
     }
 }
