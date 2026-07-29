@@ -4,6 +4,7 @@ function numIslands(grid) {
   const rows = grid.length;
   const cols = grid[0].length;
   const visited = Array.from({ length: rows }, () => new Array(cols).fill(false));
+  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 
   function dfs(r, c) {
     if (r < 0 || c < 0 || r >= rows || c >= cols) return;
@@ -11,10 +12,9 @@ function numIslands(grid) {
 
     visited[r][c] = true;
 
-    dfs(r + 1, c);
-    dfs(r - 1, c);
-    dfs(r, c + 1);
-    dfs(r, c - 1);
+    for (const [dr, dc] of dirs) {
+      dfs(r + dr, c + dc);
+    }
   }
 
   let count = 0;
@@ -67,30 +67,46 @@ function numIslandsBFS(grid) {
 }
 
 function runTests() {
-  const test1 = [
-    ['1', '1', '0'],
-    ['0', '1', '0'],
-    ['0', '0', '1'],
+  const cases = [
+    {
+      grid: [
+        ['1', '1', '0'],
+        ['0', '1', '0'],
+        ['0', '0', '1'],
+      ],
+      expected: 2,
+    },
+    {
+      grid: [
+        ['1', '1', '1', '1', '0'],
+        ['1', '1', '0', '1', '0'],
+        ['1', '1', '0', '0', '0'],
+        ['0', '0', '0', '0', '0'],
+      ],
+      expected: 1,
+    },
+    { grid: [], expected: 0 },
+    {
+      grid: [
+        ['0', '0'],
+        ['0', '0'],
+      ],
+      expected: 0,
+    },
+    {
+      grid: [
+        ['1', '0', '1', '0', '1'],
+      ],
+      expected: 3,
+    },
   ];
 
-  const test2 = [
-    ['1', '1', '1', '1', '0'],
-    ['1', '1', '0', '1', '0'],
-    ['1', '1', '0', '0', '0'],
-    ['0', '0', '0', '0', '0'],
-  ];
-
-  const test3 = [];
-
-  const test4 = [
-    ['0', '0'],
-    ['0', '0'],
-  ];
-
-  console.log(numIslands(test1), numIslandsBFS(test1));
-  console.log(numIslands(test2), numIslandsBFS(test2));
-  console.log(numIslands(test3), numIslandsBFS(test3));
-  console.log(numIslands(test4), numIslandsBFS(test4));
+  for (const { grid, expected } of cases) {
+    const dfsResult = numIslands(grid);
+    const bfsResult = numIslandsBFS(grid);
+    const ok = dfsResult === expected && bfsResult === expected;
+    console.log(`dfs=${dfsResult} bfs=${bfsResult} expected=${expected} ${ok ? 'OK' : 'FAIL'}`);
+  }
 }
 
 runTests();
