@@ -1,5 +1,5 @@
 function numIslands(grid) {
-  if (!grid || grid.length === 0) return 0;
+  if (!grid || grid.length === 0 || grid[0].length === 0) return 0;
 
   const rows = grid.length;
   const cols = grid[0].length;
@@ -7,7 +7,7 @@ function numIslands(grid) {
 
   function dfs(r, c) {
     if (r < 0 || c < 0 || r >= rows || c >= cols) return;
-    if (visited[r][c] || grid[r][c] === '0') return;
+    if (visited[r][c] || grid[r][c] !== '1') return;
 
     visited[r][c] = true;
 
@@ -32,11 +32,12 @@ function numIslands(grid) {
 }
 
 function numIslandsBFS(grid) {
-  if (!grid || grid.length === 0) return 0;
+  if (!grid || grid.length === 0 || grid[0].length === 0) return 0;
 
   const rows = grid.length;
   const cols = grid[0].length;
   const visited = Array.from({ length: rows }, () => new Array(cols).fill(false));
+  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
   let count = 0;
 
   for (let r = 0; r < rows; r++) {
@@ -48,7 +49,6 @@ function numIslandsBFS(grid) {
 
         while (queue.length) {
           const [cr, cc] = queue.shift();
-          const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 
           for (const [dr, dc] of dirs) {
             const nr = cr + dr;
@@ -66,20 +66,31 @@ function numIslandsBFS(grid) {
   return count;
 }
 
-const test1 = [
-  ['1', '1', '0'],
-  ['0', '1', '0'],
-  ['0', '0', '1'],
-];
+function runTests() {
+  const test1 = [
+    ['1', '1', '0'],
+    ['0', '1', '0'],
+    ['0', '0', '1'],
+  ];
 
-const test2 = [
-  ['1', '1', '1', '1', '0'],
-  ['1', '1', '0', '1', '0'],
-  ['1', '1', '0', '0', '0'],
-  ['0', '0', '0', '0', '0'],
-];
+  const test2 = [
+    ['1', '1', '1', '1', '0'],
+    ['1', '1', '0', '1', '0'],
+    ['1', '1', '0', '0', '0'],
+    ['0', '0', '0', '0', '0'],
+  ];
 
-console.log(numIslands(test1));
-console.log(numIslandsBFS(test1));
-console.log(numIslands(test2));
-console.log(numIslandsBFS(test2));
+  const test3 = [];
+
+  const test4 = [
+    ['0', '0'],
+    ['0', '0'],
+  ];
+
+  console.log(numIslands(test1), numIslandsBFS(test1));
+  console.log(numIslands(test2), numIslandsBFS(test2));
+  console.log(numIslands(test3), numIslandsBFS(test3));
+  console.log(numIslands(test4), numIslandsBFS(test4));
+}
+
+runTests();
