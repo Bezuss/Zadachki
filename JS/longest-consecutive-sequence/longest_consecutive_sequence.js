@@ -20,4 +20,19 @@ function longestConsecutive(nums) {
   return best;
 }
 
-console.log(longestConsecutive([100, 4, 200, 1, 3, 2]));
+function runTests() {
+  const cases = [
+    { input: [100, 4, 200, 1, 3, 2], expected: 4 },
+    { input: [], expected: 0 },
+    { input: [1, 2, 0, 1], expected: 3 },
+    { input: [9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6], expected: 7 },
+    { input: [5], expected: 1 },
+  ];
+
+  for (const { input, expected } of cases) {
+    const result = longestConsecutive(input);
+    console.log(JSON.stringify(input), '->', result, result === expected ? 'ok' : `FAIL expected ${expected}`);
+  }
+}
+
+runTests();
