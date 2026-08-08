@@ -1,27 +1,35 @@
 function wordBreak(s, wordDict) {
   const words = new Set(wordDict);
-  const memo = new Map();
+  const n = s.length;
+  const dp = new Array(n + 1).fill(false);
+  dp[0] = true;
 
-  function helper(str) {
-    if (str.length === 0) return true;
-    if (memo.has(str)) return memo.get(str);
-
-    let result = false;
-    for (let i = 1; i <= str.length; i++) {
-      const prefix = str.slice(0, i);
-      if (words.has(prefix) && helper(str.slice(i))) {
-        result = true;
+  for (let i = 1; i <= n; i++) {
+    for (let j = 0; j < i; j++) {
+      if (dp[j] && words.has(s.slice(j, i))) {
+        dp[i] = true;
         break;
       }
     }
-
-    memo.set(str, result);
-    return result;
   }
 
-  return helper(s);
+  return dp[n];
 }
 
-console.log(wordBreak("leetcode", ["leet", "code"]));
-console.log(wordBreak("applepenapple", ["apple", "pen"]));
-console.log(wordBreak("catsandog", ["cats", "dog", "sand", "and", "cat"]));
+function runTests() {
+  const cases = [
+    ["leetcode", ["leet", "code"], true],
+    ["applepenapple", ["apple", "pen"], true],
+    ["catsandog", ["cats", "dog", "sand", "and", "cat"], false],
+    ["", ["a"], true],
+    ["a", ["b"], false],
+    ["cars", ["car", "ca", "rs"], true],
+  ];
+
+  for (const [s, dict, expected] of cases) {
+    const got = wordBreak(s, dict);
+    console.log(`wordBreak(${JSON.stringify(s)}, ${JSON.stringify(dict)}) = ${got}, expected ${expected}`);
+  }
+}
+
+runTests();
