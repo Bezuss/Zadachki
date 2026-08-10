@@ -17,9 +17,18 @@ function partition(arr, lo, hi) {
   return i;
 }
 
+function quickselect(arr, lo, hi, target) {
+  if (lo === hi) return arr[lo];
+  const p = partition(arr, lo, hi);
+  if (p === target) return arr[p];
+  if (p < target) return quickselect(arr, p + 1, hi, target);
+  return quickselect(arr, lo, p - 1, target);
+}
+
 function kthLargest(nums, k) {
-  const sorted = [...nums].sort((a, b) => a - b);
-  return sorted[sorted.length - k];
+  const arr = [...nums];
+  const target = arr.length - k;
+  return quickselect(arr, 0, arr.length - 1, target);
 }
 
 console.log(kthLargest([3,2,1,5,6,4], 2));
