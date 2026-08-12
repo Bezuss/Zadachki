@@ -1,4 +1,6 @@
 function orangesRotting(grid) {
+  if (!grid || grid.length === 0) return 0;
+
   const rows = grid.length;
   const cols = grid[0].length;
 
@@ -14,6 +16,8 @@ function orangesRotting(grid) {
       }
     }
   }
+
+  if (fresh === 0) return 0;
 
   let minutes = 0;
   const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
@@ -37,14 +41,29 @@ function orangesRotting(grid) {
     minutes++;
   }
 
-  if (fresh > 0) return -1;
-  return minutes;
+  return fresh > 0 ? -1 : minutes;
 }
 
-const grid1 = [
-  [2, 1, 1],
-  [1, 1, 0],
-  [0, 1, 1],
-];
+function runTests() {
+  const grid1 = [
+    [2, 1, 1],
+    [1, 1, 0],
+    [0, 1, 1],
+  ];
+  console.log(orangesRotting(grid1));
 
-console.log(orangesRotting(grid1));
+  const grid2 = [
+    [2, 1, 1],
+    [0, 1, 1],
+    [1, 0, 1],
+  ];
+  console.log(orangesRotting(grid2));
+
+  const grid3 = [[0, 2]];
+  console.log(orangesRotting(grid3));
+
+  const grid4 = [[0, 0, 0]];
+  console.log(orangesRotting(grid4));
+}
+
+runTests();
