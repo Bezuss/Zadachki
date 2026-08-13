@@ -9,18 +9,15 @@ function orangesRotting(grid) {
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      if (grid[r][c] === 2) {
-        queue.push([r, c]);
-      } else if (grid[r][c] === 1) {
-        fresh++;
-      }
+      if (grid[r][c] === 2) queue.push([r, c]);
+      else if (grid[r][c] === 1) fresh++;
     }
   }
 
   if (fresh === 0) return 0;
 
-  let minutes = 0;
   const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  let minutes = 0;
 
   while (queue.length > 0 && fresh > 0) {
     const next = [];
@@ -29,11 +26,12 @@ function orangesRotting(grid) {
       for (const [dr, dc] of dirs) {
         const nr = r + dr;
         const nc = c + dc;
-        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] === 1) {
-          grid[nr][nc] = 2;
-          fresh--;
-          next.push([nr, nc]);
-        }
+        if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+        if (grid[nr][nc] !== 1) continue;
+
+        grid[nr][nc] = 2;
+        fresh--;
+        next.push([nr, nc]);
       }
     }
 
@@ -45,25 +43,19 @@ function orangesRotting(grid) {
 }
 
 function runTests() {
-  const grid1 = [
-    [2, 1, 1],
-    [1, 1, 0],
-    [0, 1, 1],
+  const cases = [
+    { grid: [[2, 1, 1], [1, 1, 0], [0, 1, 1]], expected: 4 },
+    { grid: [[2, 1, 1], [0, 1, 1], [1, 0, 1]], expected: -1 },
+    { grid: [[0, 2]], expected: 0 },
+    { grid: [[0, 0, 0]], expected: 0 },
+    { grid: [[2]], expected: 0 },
+    { grid: [[1]], expected: -1 },
   ];
-  console.log(orangesRotting(grid1));
 
-  const grid2 = [
-    [2, 1, 1],
-    [0, 1, 1],
-    [1, 0, 1],
-  ];
-  console.log(orangesRotting(grid2));
-
-  const grid3 = [[0, 2]];
-  console.log(orangesRotting(grid3));
-
-  const grid4 = [[0, 0, 0]];
-  console.log(orangesRotting(grid4));
+  for (const { grid, expected } of cases) {
+    const result = orangesRotting(grid.map(row => row.slice()));
+    console.log(JSON.stringify(grid), '->', result, result === expected ? 'ok' : 'FAIL expected ' + expected);
+  }
 }
 
 runTests();
