@@ -23,7 +23,17 @@ function findMedianSortedArrays(a, b) {
       lo = i + 1;
     }
   }
+
+  throw new Error('input arrays not sorted');
 }
 
-console.log(findMedianSortedArrays([1, 3], [2]));
-console.log(findMedianSortedArrays([1, 2], [3, 4]));
+function test(a, b, expected) {
+  const got = findMedianSortedArrays(a, b);
+  console.log(JSON.stringify(a), JSON.stringify(b), '->', got, got === expected ? 'ok' : `expected ${expected}`);
+}
+
+test([1, 3], [2], 2);
+test([1, 2], [3, 4], 2.5);
+test([], [1], 1);
+test([2], [], 2);
+test([], [2, 3], 2.5);
