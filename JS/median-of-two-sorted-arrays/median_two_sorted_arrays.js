@@ -29,7 +29,8 @@ function findMedianSortedArrays(a, b) {
 
 function test(a, b, expected) {
   const got = findMedianSortedArrays(a, b);
-  console.log(JSON.stringify(a), JSON.stringify(b), '->', got, got === expected ? 'ok' : `expected ${expected}`);
+  const pass = Math.abs(got - expected) < 1e-9;
+  console.log(JSON.stringify(a), JSON.stringify(b), '->', got, pass ? 'ok' : `expected ${expected}`);
 }
 
 test([1, 3], [2], 2);
@@ -37,3 +38,5 @@ test([1, 2], [3, 4], 2.5);
 test([], [1], 1);
 test([2], [], 2);
 test([], [2, 3], 2.5);
+test([1, 5, 9], [2, 3, 7, 8], 5);
+test([100000], [100001], 100000.5);
