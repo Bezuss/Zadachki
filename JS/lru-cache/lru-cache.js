@@ -9,6 +9,7 @@ class Node {
 
 class LRUCache {
   constructor(capacity) {
+    if (capacity <= 0) throw new Error('capacity must be positive');
     this.capacity = capacity;
     this.map = new Map();
     this.head = new Node(null, null);
@@ -43,16 +44,24 @@ class LRUCache {
       node.value = value;
       this.remove(node);
       this.addToFront(node);
-    } else {
-      const node = new Node(key, value);
-      this.map.set(key, node);
-      this.addToFront(node);
-      if (this.map.size > this.capacity) {
-        const lru = this.tail.prev;
-        this.remove(lru);
-        this.map.delete(lru.key);
-      }
+      return;
     }
+    const node = new Node(key, value);
+    this.map.set(key, node);
+    this.addToFront(node);
+    if (this.map.size > this.capacity) {
+      const lru = this.tail.prev;
+      this.remove(lru);
+      this.map.delete(lru.key);
+    }
+  }
+
+  has(key) {
+    return this.map.has(key);
+  }
+
+  size() {
+    return this.map.size;
   }
 }
 
@@ -62,3 +71,8 @@ c.put(2, 2);
 console.log(c.get(1));
 c.put(3, 3);
 console.log(c.get(2));
+c.put(4, 4);
+console.log(c.get(1));
+console.log(c.get(3));
+console.log(c.get(4));
+console.log(c.size());
