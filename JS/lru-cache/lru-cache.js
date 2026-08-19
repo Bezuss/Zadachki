@@ -32,6 +32,8 @@ class LRUCache {
   get(key) {
     if (!this.map.has(key)) return -1;
     const node = this.map.get(key);
+    this.remove(node);
+    this.addToFront(node);
     return node.value;
   }
 
@@ -39,10 +41,17 @@ class LRUCache {
     if (this.map.has(key)) {
       const node = this.map.get(key);
       node.value = value;
+      this.remove(node);
+      this.addToFront(node);
     } else {
       const node = new Node(key, value);
       this.map.set(key, node);
       this.addToFront(node);
+      if (this.map.size > this.capacity) {
+        const lru = this.tail.prev;
+        this.remove(lru);
+        this.map.delete(lru.key);
+      }
     }
   }
 }
@@ -51,3 +60,5 @@ const c = new LRUCache(2);
 c.put(1, 1);
 c.put(2, 2);
 console.log(c.get(1));
+c.put(3, 3);
+console.log(c.get(2));
