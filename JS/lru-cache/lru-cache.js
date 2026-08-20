@@ -9,7 +9,9 @@ class Node {
 
 class LRUCache {
   constructor(capacity) {
-    if (capacity <= 0) throw new Error('capacity must be positive');
+    if (!Number.isInteger(capacity) || capacity <= 0) {
+      throw new Error('capacity must be a positive integer');
+    }
     this.capacity = capacity;
     this.map = new Map();
     this.head = new Node(null, null);
@@ -63,6 +65,16 @@ class LRUCache {
   size() {
     return this.map.size;
   }
+
+  keysInOrder() {
+    const result = [];
+    let node = this.head.next;
+    while (node !== this.tail) {
+      result.push(node.key);
+      node = node.next;
+    }
+    return result;
+  }
 }
 
 const c = new LRUCache(2);
@@ -75,4 +87,11 @@ c.put(4, 4);
 console.log(c.get(1));
 console.log(c.get(3));
 console.log(c.get(4));
-console.log(c.size());
+console.log(c.keysInOrder());
+
+const c2 = new LRUCache(1);
+c2.put(5, 50);
+console.log(c2.get(5));
+c2.put(6, 60);
+console.log(c2.get(5));
+console.log(c2.get(6));
