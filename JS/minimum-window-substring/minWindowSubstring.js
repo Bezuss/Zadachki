@@ -1,5 +1,5 @@
 function minWindow(s, t) {
-  if (!s || !t) return "";
+  if (!s || !t || s.length < t.length) return "";
 
   const need = {};
   for (const ch of t) {
@@ -13,18 +13,22 @@ function minWindow(s, t) {
 
   for (let right = 0; right < s.length; right++) {
     const ch = s[right];
-    if (need[ch] > 0) missing--;
-    need[ch] = (need[ch] || 0) - 1;
+    if (need[ch] !== undefined) {
+      if (need[ch] > 0) missing--;
+      need[ch]--;
+    }
 
-    if (missing === 0) {
-      while (need[s[left]] < 0) {
-        need[s[left]]++;
-        left++;
-      }
+    while (missing === 0) {
       if (right - left + 1 < bestLen) {
         bestLen = right - left + 1;
         bestStart = left;
       }
+      const lch = s[left];
+      if (need[lch] !== undefined) {
+        need[lch]++;
+        if (need[lch] > 0) missing++;
+      }
+      left++;
     }
   }
 
@@ -32,3 +36,5 @@ function minWindow(s, t) {
 }
 
 console.log(minWindow("ADOBECODEBANC", "ABC"));
+console.log(minWindow("a", "a"));
+console.log(minWindow("a", "aa"));
