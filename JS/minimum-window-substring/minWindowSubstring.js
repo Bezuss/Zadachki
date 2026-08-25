@@ -35,6 +35,21 @@ function minWindow(s, t) {
   return bestLen === Infinity ? "" : s.slice(bestStart, bestStart + bestLen);
 }
 
-console.log(minWindow("ADOBECODEBANC", "ABC"));
-console.log(minWindow("a", "a"));
-console.log(minWindow("a", "aa"));
+function runTests() {
+  const cases = [
+    ["ADOBECODEBANC", "ABC", "BANC"],
+    ["a", "a", "a"],
+    ["a", "aa", ""],
+    ["ab", "b", "b"],
+    ["", "a", ""],
+    ["aa", "aa", "aa"],
+    ["cabwefgewcwaefgcf", "cae", "cwae"],
+  ];
+
+  for (const [s, t, expected] of cases) {
+    const result = minWindow(s, t);
+    console.log(`minWindow(${JSON.stringify(s)}, ${JSON.stringify(t)}) = ${JSON.stringify(result)} (expected ${JSON.stringify(expected)})`);
+  }
+}
+
+runTests();
