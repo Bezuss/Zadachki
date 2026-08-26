@@ -1,6 +1,20 @@
 function exist(board, word) {
+  if (!board.length || !board[0].length || !word.length) return false;
+
   const rows = board.length;
   const cols = board[0].length;
+
+  const charCount = {};
+  for (const row of board) {
+    for (const ch of row) {
+      charCount[ch] = (charCount[ch] || 0) + 1;
+    }
+  }
+  const wordCount = {};
+  for (const ch of word) {
+    wordCount[ch] = (wordCount[ch] || 0) + 1;
+    if (!charCount[ch] || wordCount[ch] > charCount[ch]) return false;
+  }
 
   function dfs(r, c, i) {
     if (i === word.length) return true;
@@ -28,11 +42,19 @@ function exist(board, word) {
   return false;
 }
 
-const board = [
-  ['A', 'B', 'C', 'E'],
-  ['S', 'F', 'C', 'S'],
-  ['A', 'D', 'E', 'E'],
-];
+function runTests() {
+  const board = [
+    ['A', 'B', 'C', 'E'],
+    ['S', 'F', 'C', 'S'],
+    ['A', 'D', 'E', 'E'],
+  ];
 
-console.log(exist(board, 'ABCCED'));
-console.log(exist(board, 'SEE'));
+  console.log(exist(board, 'ABCCED'));
+  console.log(exist(board, 'SEE'));
+  console.log(exist(board, 'ABCB'));
+  console.log(exist([['A']], 'A'));
+  console.log(exist([['A']], 'AB'));
+  console.log(exist([['A', 'A']], 'AAA'));
+}
+
+runTests();
