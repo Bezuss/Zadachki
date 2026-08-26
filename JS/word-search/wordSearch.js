@@ -6,7 +6,18 @@ function exist(board, word) {
     if (i === word.length) return true;
     if (r < 0 || c < 0 || r >= rows || c >= cols) return false;
     if (board[r][c] !== word[i]) return false;
-    return false;
+
+    const temp = board[r][c];
+    board[r][c] = '#';
+
+    const found =
+      dfs(r + 1, c, i + 1) ||
+      dfs(r - 1, c, i + 1) ||
+      dfs(r, c + 1, i + 1) ||
+      dfs(r, c - 1, i + 1);
+
+    board[r][c] = temp;
+    return found;
   }
 
   for (let r = 0; r < rows; r++) {
@@ -24,3 +35,4 @@ const board = [
 ];
 
 console.log(exist(board, 'ABCCED'));
+console.log(exist(board, 'SEE'));
