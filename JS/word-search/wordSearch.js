@@ -16,10 +16,17 @@ function exist(board, word) {
     if (!charCount[ch] || wordCount[ch] > charCount[ch]) return false;
   }
 
+  let w = word;
+  const revCount = {};
+  for (const ch of w) revCount[ch] = (revCount[ch] || 0) + 1;
+  if (revCount[w[0]] < revCount[w[w.length - 1]]) {
+    w = w.split('').reverse().join('');
+  }
+
   function dfs(r, c, i) {
-    if (i === word.length) return true;
+    if (i === w.length) return true;
     if (r < 0 || c < 0 || r >= rows || c >= cols) return false;
-    if (board[r][c] !== word[i]) return false;
+    if (board[r][c] !== w[i]) return false;
 
     const temp = board[r][c];
     board[r][c] = '#';
@@ -55,6 +62,13 @@ function runTests() {
   console.log(exist([['A']], 'A'));
   console.log(exist([['A']], 'AB'));
   console.log(exist([['A', 'A']], 'AAA'));
+
+  const big = [
+    ['C', 'A', 'A'],
+    ['A', 'A', 'A'],
+    ['B', 'C', 'D'],
+  ];
+  console.log(exist(big, 'AAB'));
 }
 
 runTests();
