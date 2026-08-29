@@ -20,8 +20,16 @@ function buildTree(values) {
 }
 
 function kthSmallest(root, k) {
-  // todo
+  const values = [];
+  function inorder(node) {
+    if (!node) return;
+    inorder(node.left);
+    values.push(node.val);
+    inorder(node.right);
+  }
+  inorder(root);
+  return values[k - 1];
 }
 
 const tree = buildTree([5, 3, 8, 1, 4, 7, 9]);
-console.log(tree);
+console.log(kthSmallest(tree, 3));
