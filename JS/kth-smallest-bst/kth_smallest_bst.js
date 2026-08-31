@@ -19,7 +19,7 @@ function buildTree(values) {
   return root;
 }
 
-function kthSmallest(root, k) {
+function kthSmallestRecursive(root, k) {
   let count = 0;
   let result = null;
   function inorder(node) {
@@ -37,7 +37,23 @@ function kthSmallest(root, k) {
   return result;
 }
 
+function kthSmallestIterative(root, k) {
+  const stack = [];
+  let node = root;
+  let count = 0;
+  while (node || stack.length) {
+    while (node) {
+      stack.push(node);
+      node = node.left;
+    }
+    node = stack.pop();
+    count++;
+    if (count === k) return node.val;
+    node = node.right;
+  }
+  return null;
+}
+
 const tree = buildTree([5, 3, 8, 1, 4, 7, 9]);
-console.log(kthSmallest(tree, 3));
-console.log(kthSmallest(tree, 1));
-console.log(kthSmallest(tree, 7));
+console.log(kthSmallestRecursive(tree, 3));
+console.log(kthSmallestIterative(tree, 3));
