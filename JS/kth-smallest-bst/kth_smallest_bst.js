@@ -54,6 +54,23 @@ function kthSmallestIterative(root, k) {
   return null;
 }
 
-const tree = buildTree([5, 3, 8, 1, 4, 7, 9]);
-console.log(kthSmallestRecursive(tree, 3));
-console.log(kthSmallestIterative(tree, 3));
+function runTests() {
+  const tree = buildTree([5, 3, 8, 1, 4, 7, 9]);
+  const cases = [1, 2, 3, 4, 5, 6, 7];
+  for (const k of cases) {
+    const a = kthSmallestRecursive(tree, k);
+    const b = kthSmallestIterative(tree, k);
+    console.log(`k=${k} recursive=${a} iterative=${b} match=${a === b}`);
+  }
+
+  const single = buildTree([42]);
+  console.log(kthSmallestRecursive(single, 1), kthSmallestIterative(single, 1));
+
+  const empty = kthSmallestRecursive(null, 1);
+  console.log('empty tree result:', empty);
+
+  const outOfRange = kthSmallestRecursive(tree, 100);
+  console.log('out of range:', outOfRange);
+}
+
+runTests();
