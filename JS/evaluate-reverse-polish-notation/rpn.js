@@ -10,7 +10,7 @@ function evalRPN(tokens) {
       if (tok === '+') res = a + b;
       else if (tok === '-') res = a - b;
       else if (tok === '*') res = a * b;
-      else res = a / b;
+      else res = Math.trunc(a / b);
       stack.push(res);
     } else {
       stack.push(Number(tok));
@@ -20,5 +20,13 @@ function evalRPN(tokens) {
   return stack.pop();
 }
 
-console.log(evalRPN(['2', '1', '+', '3', '*']));
-console.log(evalRPN(['4', '13', '5', '/', '+']));
+function test(tokens, expected) {
+  const got = evalRPN(tokens);
+  console.log(tokens.join(' '), '=>', got, got === expected ? 'ok' : `FAIL expected ${expected}`);
+}
+
+test(['2', '1', '+', '3', '*'], 9);
+test(['4', '13', '5', '/', '+'], 6);
+test(['10', '6', '9', '3', '+', '-11', '*', '/', '*', '17', '+', '5', '+'], 22);
+test(['-4', '2', '/'], -2);
+test(['7', '2', '/'], 3);
