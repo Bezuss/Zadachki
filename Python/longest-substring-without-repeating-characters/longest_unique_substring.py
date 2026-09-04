@@ -1,5 +1,13 @@
 def length_of_longest_substring(s):
-    pass
+    last_seen = {}
+    start = 0
+    best = 0
+    for i, ch in enumerate(s):
+        if ch in last_seen and last_seen[ch] >= start:
+            start = last_seen[ch] + 1
+        last_seen[ch] = i
+        best = max(best, i - start + 1)
+    return best
 
 
 def brute_force(s):
@@ -16,4 +24,5 @@ def brute_force(s):
 
 
 if __name__ == "__main__":
+    print(length_of_longest_substring("abcabcbb"))
     print(brute_force("abcabcbb"))
