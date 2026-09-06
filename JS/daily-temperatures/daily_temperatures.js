@@ -1,4 +1,5 @@
 function dailyTemperatures(temps) {
+  if (!Array.isArray(temps)) throw new TypeError('expected array');
   const result = new Array(temps.length).fill(0);
   const stack = [];
   for (let i = 0; i < temps.length; i++) {
@@ -12,3 +13,5 @@ function dailyTemperatures(temps) {
 }
 
 console.log(dailyTemperatures([73,74,75,71,69,72,76,73]));
+console.log(dailyTemperatures([]));
+console.log(dailyTemperatures([30,30,30]));
