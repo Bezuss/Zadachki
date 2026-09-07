@@ -17,12 +17,17 @@ function runTests() {
     [[], []],
     [[30,30,30], [0,0,0]],
     [[89,62,70,58,47,47,46,76,100,70], [8,1,5,4,3,2,1,1,0,0]],
+    [[100,90,80,70], [0,0,0,0]],
+    [[70,80,90,100], [1,1,1,0]],
   ];
+  let failures = 0;
   for (const [input, expected] of cases) {
     const got = dailyTemperatures(input);
     const pass = JSON.stringify(got) === JSON.stringify(expected);
+    if (!pass) failures++;
     console.log(pass ? 'pass' : `fail: got ${got} expected ${expected}`);
   }
+  console.log(failures === 0 ? 'all passed' : `${failures} failed`);
 }
 
 runTests();
