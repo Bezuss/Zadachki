@@ -1,5 +1,4 @@
 function dailyTemperatures(temps) {
-  if (!Array.isArray(temps)) throw new TypeError('expected array');
   const result = new Array(temps.length).fill(0);
   const stack = [];
   for (let i = 0; i < temps.length; i++) {
@@ -12,6 +11,18 @@ function dailyTemperatures(temps) {
   return result;
 }
 
-console.log(dailyTemperatures([73,74,75,71,69,72,76,73]));
-console.log(dailyTemperatures([]));
-console.log(dailyTemperatures([30,30,30]));
+function runTests() {
+  const cases = [
+    [[73,74,75,71,69,72,76,73], [1,1,4,2,1,1,0,0]],
+    [[], []],
+    [[30,30,30], [0,0,0]],
+    [[89,62,70,58,47,47,46,76,100,70], [8,1,5,4,3,2,1,1,0,0]],
+  ];
+  for (const [input, expected] of cases) {
+    const got = dailyTemperatures(input);
+    const pass = JSON.stringify(got) === JSON.stringify(expected);
+    console.log(pass ? 'pass' : `fail: got ${got} expected ${expected}`);
+  }
+}
+
+runTests();
