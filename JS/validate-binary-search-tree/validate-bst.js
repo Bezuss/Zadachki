@@ -45,16 +45,24 @@ function buildTree(arr) {
   return nodes[0];
 }
 
-const cases = [
-  [2, 1, 3],
-  [5, 1, 4, null, null, 3, 6],
-  [10, 5, 20, 1, 15],
-  [1],
-  [2, 2, 3],
-  [],
-];
+function runTests() {
+  const cases = [
+    { arr: [2, 1, 3], expected: true },
+    { arr: [5, 1, 4, null, null, 3, 6], expected: false },
+    { arr: [10, 5, 20, 1, 15], expected: false },
+    { arr: [1], expected: true },
+    { arr: [2, 2, 3], expected: false },
+    { arr: [], expected: true },
+    { arr: [Number.MIN_SAFE_INTEGER], expected: true },
+  ];
 
-for (const c of cases) {
-  const tree = buildTree(c);
-  console.log(JSON.stringify(c), isValidBST(tree), isValidBSTIterative(tree));
+  for (const { arr, expected } of cases) {
+    const tree = buildTree(arr);
+    const r1 = isValidBST(tree);
+    const r2 = isValidBSTIterative(tree);
+    const ok = r1 === expected && r2 === expected;
+    console.log(JSON.stringify(arr), '->', r1, r2, ok ? 'OK' : 'MISMATCH');
+  }
 }
+
+runTests();
