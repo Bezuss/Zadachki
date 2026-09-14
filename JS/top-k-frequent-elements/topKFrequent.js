@@ -1,6 +1,5 @@
 function topKFrequent(nums, k) {
-  if (!Array.isArray(nums) || nums.length === 0) return [];
-  if (k <= 0) return [];
+  if (!Array.isArray(nums) || nums.length === 0 || k <= 0) return [];
 
   const counts = new Map();
   for (const n of nums) {
@@ -27,11 +26,23 @@ function topKFrequent(nums, k) {
 }
 
 function runTests() {
-  console.log(topKFrequent([1,1,1,2,2,3], 2));
-  console.log(topKFrequent([1], 1));
-  console.log(topKFrequent([4,1,-1,2,-1,2,3], 2));
-  console.log(topKFrequent([], 3));
-  console.log(topKFrequent([5,5,5,5], 0));
+  const cases = [
+    [[1,1,1,2,2,3], 2, [1,2]],
+    [[1], 1, [1]],
+    [[4,1,-1,2,-1,2,3], 2, [-1,2]],
+    [[], 3, []],
+    [[5,5,5,5], 0, []],
+  ];
+
+  for (const [nums, k, expected] of cases) {
+    const got = topKFrequent(nums, k);
+    const sortedGot = [...got].sort();
+    const sortedExp = [...expected].sort();
+    const pass = JSON.stringify(sortedGot) === JSON.stringify(sortedExp);
+    console.log(`topKFrequent(${JSON.stringify(nums)}, ${k}) = ${JSON.stringify(got)} ${pass ? 'ok' : 'FAIL expected ' + JSON.stringify(expected)}`);
+  }
 }
 
 runTests();
+
+module.exports = topKFrequent;
