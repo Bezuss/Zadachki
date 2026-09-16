@@ -50,13 +50,21 @@ function buildTree(values) {
   return nodes[0] || null;
 }
 
-const root = buildTree([7, 3, 15, 1, 5, 9, 20]);
-const it = new BSTIterator(root);
-const result = [];
-while (it.hasNext()) {
-  result.push(it.next());
+function isSortedOutput(it) {
+  const out = [];
+  while (it.hasNext()) out.push(it.next());
+  return out;
 }
-console.log(result);
+
+const root = buildTree([10, 5, 20, 2, 8, 15, 30]);
+const it1 = new BSTIterator(root);
+console.log(isSortedOutput(it1));
+
+const it2 = new BSTIterator(root);
+console.log(it2.peek(), it2.next(), it2.peek());
+
+const single = new BSTIterator(new TreeNode(42));
+console.log(single.hasNext(), single.next(), single.hasNext());
 
 const empty = new BSTIterator(null);
 console.log(empty.hasNext(), empty.next());
