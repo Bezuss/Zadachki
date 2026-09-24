@@ -18,7 +18,7 @@ def combination_sum(candidates, target):
     return result
 
 
-def combination_sum2(candidates, target):
+def combination_sum_unique(candidates, target):
     result = []
     candidates = sorted(candidates)
 
@@ -43,5 +43,17 @@ def combination_sum2(candidates, target):
 
 
 if __name__ == "__main__":
-    print(combination_sum([2, 3, 6, 7], 7))
-    print(combination_sum2([10, 1, 2, 7, 6, 1, 5], 8))
+    tests = [
+        ([2, 3, 6, 7], 7),
+        ([2, 3, 5], 8),
+        ([2], 1),
+    ]
+    for cands, t in tests:
+        print(cands, t, "->", combination_sum(cands, t))
+
+    dup_tests = [
+        ([10, 1, 2, 7, 6, 1, 5], 8),
+        ([2, 5, 2, 1, 2], 5),
+    ]
+    for cands, t in dup_tests:
+        print(cands, t, "->", combination_sum_unique(cands, t))
