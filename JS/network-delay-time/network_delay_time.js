@@ -68,9 +68,16 @@ function networkDelayTime(times, n, k) {
   for (let i = 1; i <= n; i++) {
     ans = Math.max(ans, dist[i]);
   }
-  return ans;
+  return ans === Infinity ? -1 : ans;
 }
 
-console.log(networkDelayTime([[2, 1, 1], [2, 3, 1], [3, 4, 1]], 4, 2));
-console.log(networkDelayTime([[1, 2, 1]], 2, 1));
-console.log(networkDelayTime([[1, 2, 1]], 2, 2));
+const tests = [
+  [[[2, 1, 1], [2, 3, 1], [3, 4, 1]], 4, 2],
+  [[[1, 2, 1]], 2, 1],
+  [[[1, 2, 1]], 2, 2],
+  [[[1, 2, 1], [2, 3, 2], [1, 3, 5]], 3, 1],
+];
+
+for (const [times, n, k] of tests) {
+  console.log(networkDelayTime(times, n, k));
+}
