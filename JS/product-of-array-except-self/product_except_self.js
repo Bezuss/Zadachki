@@ -1,17 +1,34 @@
 function productExceptSelf(nums) {
   const n = nums.length
-  const left = new Array(n).fill(1)
-  const right = new Array(n).fill(1)
+  const result = new Array(n).fill(1)
 
-  for (let i = 1; i < n; i++) {
-    left[i] = left[i - 1] * nums[i - 1]
-  }
-  for (let i = n - 2; i >= 0; i--) {
-    right[i] = right[i + 1] * nums[i + 1]
+  let prefix = 1
+  for (let i = 0; i < n; i++) {
+    result[i] = prefix
+    prefix *= nums[i]
   }
 
-  return nums.map((_, i) => left[i] * right[i])
+  let suffix = 1
+  for (let i = n - 1; i >= 0; i--) {
+    result[i] *= suffix
+    suffix *= nums[i]
+  }
+
+  return result
 }
 
-console.log(productExceptSelf([1, 2, 3, 4]))
-console.log(productExceptSelf([0, 1, 2]))
+function main() {
+  const tests = [
+    [1, 2, 3, 4],
+    [0, 1, 2],
+    [0, 0, 3],
+    [-1, 1, 0, -3, 3],
+    [5],
+    [],
+  ]
+  for (const t of tests) {
+    console.log(JSON.stringify(t), '->', JSON.stringify(productExceptSelf(t)))
+  }
+}
+
+main()
