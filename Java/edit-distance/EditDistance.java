@@ -1,30 +1,42 @@
 public class EditDistance {
 
     static int distance(String a, String b) {
-        int n = a.length();
+        if (a.length() < b.length()) {
+            return distance(b, a);
+        }
         int m = b.length();
-        int[][] dp = new int[n + 1][m + 1];
-        for (int i = 0; i <= n; i++) {
-            dp[i][0] = i;
-        }
+        int[] prev = new int[m + 1];
+        int[] cur = new int[m + 1];
         for (int j = 0; j <= m; j++) {
-            dp[0][j] = j;
+            prev[j] = j;
         }
-        for (int i = 1; i <= n; i++) {
+        for (int i = 1; i <= a.length(); i++) {
+            cur[0] = i;
             for (int j = 1; j <= m; j++) {
                 if (a.charAt(i - 1) == b.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1];
+                    cur[j] = prev[j - 1];
                 } else {
-                    dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1]));
+                    cur[j] = 1 + Math.min(prev[j - 1], Math.min(prev[j], cur[j - 1]));
                 }
             }
+            int[] tmp = prev;
+            prev = cur;
+            cur = tmp;
         }
-        return dp[n][m];
+        return prev[m];
     }
 
     public static void main(String[] args) {
-        System.out.println(distance("horse", "ros"));
-        System.out.println(distance("intention", "execution"));
-        System.out.println(distance("", "abc"));
+        String[][] cases = {
+            {"horse", "ros"},
+            {"intention", "execution"},
+            {"", "abc"},
+            {"abc", ""},
+            {"same", "same"},
+            {"kitten", "sitting"}
+        };
+        for (String[] c : cases) {
+            System.out.println(c[0] + " -> " + c[1] + ": " + distance(c[0], c[1]));
+        }
     }
 }
