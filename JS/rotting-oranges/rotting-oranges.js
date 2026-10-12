@@ -19,6 +19,7 @@ function orangesRotting(grid) {
       for (const [dr, dc] of dirs) {
         const nr = r + dr;
         const nc = c + dc;
+        if (nr < 0 || nc < 0 || nr >= rows || nc >= cols) continue;
         if (grid[nr][nc] === 1) {
           grid[nr][nc] = 2;
           fresh--;
@@ -33,5 +34,14 @@ function orangesRotting(grid) {
   return fresh === 0 ? minutes : -1;
 }
 
-console.log(orangesRotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]]));
-console.log(orangesRotting([[2, 1, 1], [0, 1, 1], [1, 0, 1]]));
+const tests = [
+  [[2, 1, 1], [1, 1, 0], [0, 1, 1]],
+  [[2, 1, 1], [0, 1, 1], [1, 0, 1]],
+  [[0, 2]],
+  [[1]],
+  [[0]],
+];
+
+for (const grid of tests) {
+  console.log(orangesRotting(grid.map((row) => [...row])));
+}
