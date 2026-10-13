@@ -17,13 +17,32 @@ function alienOrder(words) {
     const len = Math.min(a.length, b.length);
     for (let j = 0; j < len; j++) {
       if (a[j] !== b[j]) {
-        graph.get(a[j]).add(b[j]);
+        if (!graph.get(a[j]).has(b[j])) {
+          graph.get(a[j]).add(b[j]);
+          indegree.set(b[j], indegree.get(b[j]) + 1);
+        }
         break;
       }
     }
   }
 
-  return Array.from(graph.keys()).join('');
+  const queue = [];
+  for (const [ch, d] of indegree) {
+    if (d === 0) queue.push(ch);
+  }
+
+  let result = '';
+  while (queue.length) {
+    const ch = queue.shift();
+    result += ch;
+    for (const next of graph.get(ch)) {
+      indegree.set(next, indegree.get(next) - 1);
+      if (indegree.get(next) === 0) queue.push(next);
+    }
+  }
+
+  return result;
 }
 
 console.log(alienOrder(['wrt', 'wrf', 'er', 'ett', 'rftt']));
+console.log(alienOrder(['z', 'x']));
