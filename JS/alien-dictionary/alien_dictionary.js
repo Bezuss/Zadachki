@@ -14,6 +14,7 @@ function alienOrder(words) {
   for (let i = 0; i < words.length - 1; i++) {
     const a = words[i];
     const b = words[i + 1];
+    if (a.length > b.length && a.startsWith(b)) return '';
     const len = Math.min(a.length, b.length);
     for (let j = 0; j < len; j++) {
       if (a[j] !== b[j]) {
@@ -41,8 +42,10 @@ function alienOrder(words) {
     }
   }
 
-  return result;
+  return result.length === graph.size ? result : '';
 }
 
 console.log(alienOrder(['wrt', 'wrf', 'er', 'ett', 'rftt']));
 console.log(alienOrder(['z', 'x']));
+console.log(alienOrder(['z', 'x', 'z']));
+console.log(alienOrder(['abc', 'ab']));
