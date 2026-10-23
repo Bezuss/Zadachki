@@ -5,6 +5,9 @@ public class SpiralMatrix {
 
     static List<Integer> spiral(int[][] matrix) {
         List<Integer> result = new ArrayList<>();
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return result;
+        }
         int top = 0;
         int bottom = matrix.length - 1;
         int left = 0;
@@ -18,14 +21,18 @@ public class SpiralMatrix {
                 result.add(matrix[i][right]);
             }
             right--;
-            for (int j = right; j >= left; j--) {
-                result.add(matrix[bottom][j]);
+            if (top <= bottom) {
+                for (int j = right; j >= left; j--) {
+                    result.add(matrix[bottom][j]);
+                }
+                bottom--;
             }
-            bottom--;
-            for (int i = bottom; i >= top; i--) {
-                result.add(matrix[i][left]);
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result.add(matrix[i][left]);
+                }
+                left++;
             }
-            left++;
         }
         return result;
     }
@@ -35,5 +42,10 @@ public class SpiralMatrix {
         System.out.println(spiral(a));
         int[][] b = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
         System.out.println(spiral(b));
+        int[][] c = {{1, 2, 3}};
+        System.out.println(spiral(c));
+        int[][] d = {{1}, {2}, {3}};
+        System.out.println(spiral(d));
+        System.out.println(spiral(new int[0][0]));
     }
 }
