@@ -38,14 +38,16 @@ public class SpiralMatrix {
     }
 
     public static void main(String[] args) {
-        int[][] a = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-        System.out.println(spiral(a));
-        int[][] b = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
-        System.out.println(spiral(b));
-        int[][] c = {{1, 2, 3}};
-        System.out.println(spiral(c));
-        int[][] d = {{1}, {2}, {3}};
-        System.out.println(spiral(d));
-        System.out.println(spiral(new int[0][0]));
+        int[][][] cases = {
+            {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
+            {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}},
+            {{1, 2, 3}},
+            {{1}, {2}, {3}},
+            {{7}},
+            {}
+        };
+        for (int[][] grid : cases) {
+            System.out.println(spiral(grid));
+        }
     }
 }
