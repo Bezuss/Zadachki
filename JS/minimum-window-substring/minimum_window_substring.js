@@ -1,5 +1,5 @@
 function minWindow(s, t) {
-  if (t.length > s.length) return "";
+  if (t.length === 0 || t.length > s.length) return "";
 
   const need = new Map();
   for (const c of t) need.set(c, (need.get(c) || 0) + 1);
@@ -33,6 +33,36 @@ function minWindow(s, t) {
   return bestLen === Infinity ? "" : s.slice(bestStart, bestStart + bestLen);
 }
 
-console.log(minWindow("ADOBECODEBANC", "ABC"));
-console.log(minWindow("a", "a"));
-console.log(minWindow("a", "aa"));
+function minWindowBrute(s, t) {
+  let best = "";
+  for (let i = 0; i < s.length; i++) {
+    for (let j = i; j < s.length; j++) {
+      const sub = s.slice(i, j + 1);
+      const counts = new Map();
+      for (const c of sub) counts.set(c, (counts.get(c) || 0) + 1);
+      let ok = true;
+      for (const c of t) {
+        if (!counts.get(c)) {
+          ok = false;
+          break;
+        }
+        counts.set(c, counts.get(c) - 1);
+      }
+      if (ok && (best === "" || sub.length < best.length)) best = sub;
+    }
+  }
+  return best;
+}
+
+const tests = [
+  ["ADOBECODEBANC", "ABC"],
+  ["a", "a"],
+  ["a", "aa"],
+  ["aa", "aa"],
+  ["abc", ""],
+  ["cabwefgewcwaefgcf", "cae"],
+];
+
+for (const [s, t] of tests) {
+  console.log(s, t, JSON.stringify(minWindow(s, t)));
+}
