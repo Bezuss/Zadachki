@@ -34,20 +34,18 @@ function minWindow(s, t) {
 }
 
 function minWindowBrute(s, t) {
+  if (t.length === 0) return "";
   let best = "";
   for (let i = 0; i < s.length; i++) {
     for (let j = i; j < s.length; j++) {
       const sub = s.slice(i, j + 1);
       const counts = new Map();
       for (const c of sub) counts.set(c, (counts.get(c) || 0) + 1);
-      let ok = true;
-      for (const c of t) {
-        if (!counts.get(c)) {
-          ok = false;
-          break;
-        }
-        counts.set(c, counts.get(c) - 1);
-      }
+      const ok = [...t].every((c) => {
+        const n = counts.get(c) || 0;
+        counts.set(c, n - 1);
+        return n > 0;
+      });
       if (ok && (best === "" || sub.length < best.length)) best = sub;
     }
   }
@@ -64,5 +62,7 @@ const tests = [
 ];
 
 for (const [s, t] of tests) {
-  console.log(s, t, JSON.stringify(minWindow(s, t)));
+  const fast = minWindow(s, t);
+  const slow = minWindowBrute(s, t);
+  console.log(s, t, JSON.stringify(fast), fast.length === slow.length ? "ok" : "mismatch");
 }
