@@ -1,32 +1,23 @@
-function groupAnagrams(strs) {
-  const map = new Map();
-
-  for (const s of strs) {
-    const key = getKey(s);
-    if (!map.has(key)) {
-      map.set(key, []);
+function groupAnagrams(words) {
+  const groups = [];
+  const used = new Array(words.length).fill(false);
+  for (let i = 0; i < words.length; i++) {
+    if (used[i]) continue;
+    const group = [words[i]];
+    used[i] = true;
+    for (let j = i + 1; j < words.length; j++) {
+      if (!used[j] && isAnagram(words[i], words[j])) {
+        group.push(words[j]);
+        used[j] = true;
+      }
     }
-    map.get(key).push(s);
+    groups.push(group);
   }
-
-  return Array.from(map.values());
+  return groups;
 }
 
-function getKey(s) {
-  const counts = new Array(26).fill(0);
-  for (const ch of s) {
-    const code = ch.charCodeAt(0) - 97;
-    if (code >= 0 && code < 26) counts[code]++;
-  }
-  return counts.join(',');
+function isAnagram(a, b) {
+  return a.split('').sort().join('') === b.split('').sort().join('');
 }
 
-function main() {
-  console.log(groupAnagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat']));
-  console.log(groupAnagrams(['']));
-  console.log(groupAnagrams(['a']));
-  console.log(groupAnagrams([]));
-  console.log(groupAnagrams(['abc', 'cba', 'bca', 'xyz']));
-}
-
-main();
+console.log(groupAnagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat']));
