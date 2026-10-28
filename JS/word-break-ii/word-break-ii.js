@@ -1,24 +1,27 @@
 function wordBreak(s, wordDict) {
   const words = new Set(wordDict);
-  const result = [];
+  const memo = new Map();
 
-  function go(start, parts) {
-    if (start === s.length) {
-      result.push(parts.join(' '));
-      return;
-    }
+  function go(start) {
+    if (memo.has(start)) return memo.get(start);
+    const res = [];
     for (let end = start + 1; end <= s.length; end++) {
       const piece = s.slice(start, end);
-      if (words.has(piece)) {
-        parts.push(piece);
-        go(end, parts);
-        parts.pop();
+      if (!words.has(piece)) continue;
+      if (end === s.length) {
+        res.push(piece);
+      } else {
+        for (const rest of go(end)) {
+          res.push(piece + ' ' + rest);
+        }
       }
     }
+    memo.set(start, res);
+    return res;
   }
 
-  go(0, []);
-  return result;
+  return go(0);
 }
 
 console.log(wordBreak('catsanddog', ['cat', 'cats', 'and', 'sand', 'dog']));
+console.log(wordBreak('pineapplepenapple', ['apple', 'pen', 'applepen', 'pine', 'pineapple']));
