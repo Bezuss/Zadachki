@@ -3,11 +3,14 @@ import java.util.*;
 public class CarFleet {
     static int carFleet(int target, int[] position, int[] speed) {
         int n = position.length;
+        if (n == 0) {
+            return 0;
+        }
         Integer[] order = new Integer[n];
         for (int i = 0; i < n; i++) {
             order[i] = i;
         }
-        Arrays.sort(order, (a, b) -> position[b] - position[a]);
+        Arrays.sort(order, (a, b) -> Integer.compare(position[b], position[a]));
         int fleets = 0;
         double slowest = 0;
         for (int idx : order) {
@@ -23,5 +26,7 @@ public class CarFleet {
     public static void main(String[] args) {
         System.out.println(carFleet(12, new int[]{10, 8, 0, 5, 3}, new int[]{2, 4, 1, 1, 3}));
         System.out.println(carFleet(10, new int[]{3}, new int[]{3}));
+        System.out.println(carFleet(100, new int[]{0, 2, 4}, new int[]{4, 2, 1}));
+        System.out.println(carFleet(10, new int[]{}, new int[]{}));
     }
 }
