@@ -2,6 +2,7 @@ function findMedianSortedArrays(a, b) {
   if (a.length > b.length) return findMedianSortedArrays(b, a)
   const m = a.length
   const n = b.length
+  if (m + n === 0) return null
   let lo = 0
   let hi = m
   while (lo <= hi) {
@@ -24,6 +25,15 @@ function findMedianSortedArrays(a, b) {
   return null
 }
 
-console.log(findMedianSortedArrays([1, 3], [2]))
-console.log(findMedianSortedArrays([1, 2], [3, 4]))
-console.log(findMedianSortedArrays([], [5]))
+const tests = [
+  [[1, 3], [2]],
+  [[1, 2], [3, 4]],
+  [[], [5]],
+  [[], []],
+  [[0, 0], [0, 0]],
+  [[-5, 3, 6], [1, 2, 8, 10]],
+]
+
+for (const [a, b] of tests) {
+  console.log(JSON.stringify(a), JSON.stringify(b), '->', findMedianSortedArrays(a, b))
+}
