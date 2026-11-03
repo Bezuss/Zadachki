@@ -1,22 +1,25 @@
-function isPalindrome(s, i, j) {
-  while (i < j) {
-    if (s[i] !== s[j]) return false;
-    i++;
-    j--;
+function expand(s, left, right) {
+  while (left >= 0 && right < s.length && s[left] === s[right]) {
+    left--;
+    right++;
   }
-  return true;
+  return right - left - 1;
 }
 
 function longestPalindrome(s) {
-  let best = '';
+  let start = 0;
+  let maxLen = 0;
   for (let i = 0; i < s.length; i++) {
-    for (let j = i; j < s.length; j++) {
-      if (j - i + 1 > best.length && isPalindrome(s, i, j)) {
-        best = s.slice(i, j + 1);
-      }
+    const odd = expand(s, i, i);
+    const even = expand(s, i, i + 1);
+    const len = Math.max(odd, even);
+    if (len > maxLen) {
+      maxLen = len;
+      start = i - Math.floor((len - 1) / 2);
     }
   }
-  return best;
+  return s.slice(start, start + maxLen);
 }
 
 console.log(longestPalindrome('babad'));
+console.log(longestPalindrome('cbbd'));
