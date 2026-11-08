@@ -11,5 +11,26 @@ function dailyTemperatures(temps) {
   return result;
 }
 
-console.log(dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]));
-console.log(dailyTemperatures([30, 40, 50, 60]));
+function brute(temps) {
+  return temps.map((t, i) => {
+    for (let j = i + 1; j < temps.length; j++) {
+      if (temps[j] > t) return j - i;
+    }
+    return 0;
+  });
+}
+
+const samples = [
+  [73, 74, 75, 71, 69, 72, 76, 73],
+  [30, 40, 50, 60],
+  [30, 60, 90],
+  [90, 80, 70],
+  [],
+  [50],
+];
+
+for (const s of samples) {
+  const fast = dailyTemperatures(s);
+  const ok = JSON.stringify(fast) === JSON.stringify(brute(s));
+  console.log(JSON.stringify(s), '->', JSON.stringify(fast), ok ? 'ok' : 'MISMATCH');
+}
