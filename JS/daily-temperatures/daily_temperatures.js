@@ -2,7 +2,7 @@ function dailyTemperatures(temps) {
   const result = new Array(temps.length).fill(0);
   const stack = [];
   for (let i = 0; i < temps.length; i++) {
-    while (stack.length && temps[i] > temps[stack[stack.length - 1]]) {
+    while (stack.length && temps[i] > temps[stack.at(-1)]) {
       const prev = stack.pop();
       result[prev] = i - prev;
     }
@@ -23,8 +23,8 @@ function brute(temps) {
 const samples = [
   [73, 74, 75, 71, 69, 72, 76, 73],
   [30, 40, 50, 60],
-  [30, 60, 90],
   [90, 80, 70],
+  [50, 50, 50],
   [],
   [50],
 ];
@@ -34,3 +34,12 @@ for (const s of samples) {
   const ok = JSON.stringify(fast) === JSON.stringify(brute(s));
   console.log(JSON.stringify(s), '->', JSON.stringify(fast), ok ? 'ok' : 'MISMATCH');
 }
+
+for (let round = 0; round < 200; round++) {
+  const arr = Array.from({ length: 30 }, () => 30 + Math.floor(Math.random() * 70));
+  if (JSON.stringify(dailyTemperatures(arr)) !== JSON.stringify(brute(arr))) {
+    console.log('random mismatch', arr);
+    break;
+  }
+}
+console.log('done');
