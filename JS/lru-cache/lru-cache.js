@@ -17,12 +17,12 @@ class LRUCache {
     this.tail.prev = this.head;
   }
 
-  remove(node) {
+  unlink(node) {
     node.prev.next = node.next;
     node.next.prev = node.prev;
   }
 
-  addFront(node) {
+  pushFront(node) {
     node.next = this.head.next;
     node.prev = this.head;
     this.head.next.prev = node;
@@ -30,23 +30,27 @@ class LRUCache {
   }
 
   get(key) {
-    if (!this.map.has(key)) return -1;
     const node = this.map.get(key);
-    this.remove(node);
-    this.addFront(node);
+    if (!node) return -1;
+    this.unlink(node);
+    this.pushFront(node);
     return node.value;
   }
 
   put(key, value) {
-    if (this.map.has(key)) {
-      this.remove(this.map.get(key));
+    const existing = this.map.get(key);
+    if (existing) {
+      existing.value = value;
+      this.unlink(existing);
+      this.pushFront(existing);
+      return;
     }
     const node = new Node(key, value);
     this.map.set(key, node);
-    this.addFront(node);
+    this.pushFront(node);
     if (this.map.size > this.capacity) {
       const last = this.tail.prev;
-      this.remove(last);
+      this.unlink(last);
       this.map.delete(last.key);
     }
   }
@@ -58,3 +62,14 @@ cache.put(2, 2);
 console.log(cache.get(1));
 cache.put(3, 3);
 console.log(cache.get(2));
+cache.put(4, 4);
+console.log(cache.get(1));
+console.log(cache.get(3));
+console.log(cache.get(4));
+
+const single = new LRUCache(1);
+single.put(5, 10);
+single.put(5, 20);
+console.log(single.get(5));
+single.put(6, 30);
+console.log(single.get(5));
