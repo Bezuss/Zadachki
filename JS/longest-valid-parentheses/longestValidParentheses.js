@@ -1,23 +1,19 @@
 function longestValidParentheses(s) {
+  const stack = [-1];
   let best = 0;
   for (let i = 0; i < s.length; i++) {
-    for (let j = i + 2; j <= s.length; j += 2) {
-      if (isValid(s.slice(i, j))) {
-        best = Math.max(best, j - i);
+    if (s[i] === '(') {
+      stack.push(i);
+    } else {
+      stack.pop();
+      if (stack.length === 0) {
+        stack.push(i);
+      } else {
+        best = Math.max(best, i - stack[stack.length - 1]);
       }
     }
   }
   return best;
-}
-
-function isValid(str) {
-  let open = 0;
-  for (const ch of str) {
-    if (ch === '(') open++;
-    else open--;
-    if (open < 0) return false;
-  }
-  return open === 0;
 }
 
 console.log(longestValidParentheses('(()'));
