@@ -1,3 +1,38 @@
+class Heap {
+  constructor(compare) {
+    this.data = [];
+    this.compare = compare;
+  }
+
+  get size() {
+    return this.data.length;
+  }
+
+  peek() {
+    return this.data[0];
+  }
+
+  push(val) {
+    this.data.push(val);
+    let i = this.data.length - 1;
+    while (i > 0) {
+      const parent = (i - 1) >> 1;
+      if (this.compare(this.data[i], this.data[parent]) >= 0) break;
+      [this.data[i], this.data[parent]] = [this.data[parent], this.data[i]];
+      i = parent;
+    }
+  }
+
+  pop() {
+    const top = this.data[0];
+    const last = this.data.pop();
+    if (this.data.length) {
+      this.data[0] = last;
+    }
+    return top;
+  }
+}
+
 class MedianFinder {
   constructor() {
     this.nums = [];
