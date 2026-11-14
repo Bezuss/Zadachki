@@ -31,14 +31,14 @@ class Heap {
       let i = 0;
       const n = this.data.length;
       while (true) {
-        let smallest = i;
+        let best = i;
         const left = 2 * i + 1;
         const right = left + 1;
-        if (left < n && this.compare(this.data[left], this.data[smallest]) < 0) smallest = left;
-        if (right < n && this.compare(this.data[right], this.data[smallest]) < 0) smallest = right;
-        if (smallest === i) break;
-        [this.data[i], this.data[smallest]] = [this.data[smallest], this.data[i]];
-        i = smallest;
+        if (left < n && this.compare(this.data[left], this.data[best]) < 0) best = left;
+        if (right < n && this.compare(this.data[right], this.data[best]) < 0) best = right;
+        if (best === i) break;
+        [this.data[i], this.data[best]] = [this.data[best], this.data[i]];
+        i = best;
       }
     }
     return top;
@@ -60,12 +60,34 @@ class MedianFinder {
   }
 
   findMedian() {
+    if (this.low.size === 0) return null;
     if (this.low.size > this.high.size) return this.low.peek();
     return (this.low.peek() + this.high.peek()) / 2;
   }
 }
 
+function brute(nums) {
+  const sorted = [...nums].sort((a, b) => a - b);
+  const mid = sorted.length >> 1;
+  if (sorted.length % 2) return sorted[mid];
+  return (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
 const mf = new MedianFinder();
-mf.addNum(1);
-mf.addNum(2);
 console.log(mf.findMedian());
+
+const seen = [];
+let ok = true;
+for (let i = 0; i < 200; i++) {
+  const n = Math.floor(Math.random() * 100) - 50;
+  seen.push(n);
+  mf.addNum(n);
+  if (mf.findMedian() !== brute(seen)) ok = false;
+}
+console.log(ok);
+
+const small = new MedianFinder();
+for (const n of [5, 15, 1, 3]) {
+  small.addNum(n);
+  console.log(small.findMedian());
+}
