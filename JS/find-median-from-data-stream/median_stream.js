@@ -28,6 +28,18 @@ class Heap {
     const last = this.data.pop();
     if (this.data.length) {
       this.data[0] = last;
+      let i = 0;
+      const n = this.data.length;
+      while (true) {
+        let smallest = i;
+        const left = 2 * i + 1;
+        const right = left + 1;
+        if (left < n && this.compare(this.data[left], this.data[smallest]) < 0) smallest = left;
+        if (right < n && this.compare(this.data[right], this.data[smallest]) < 0) smallest = right;
+        if (smallest === i) break;
+        [this.data[i], this.data[smallest]] = [this.data[smallest], this.data[i]];
+        i = smallest;
+      }
     }
     return top;
   }
@@ -35,18 +47,21 @@ class Heap {
 
 class MedianFinder {
   constructor() {
-    this.nums = [];
+    this.low = new Heap((a, b) => b - a);
+    this.high = new Heap((a, b) => a - b);
   }
 
   addNum(num) {
-    this.nums.push(num);
+    this.low.push(num);
+    this.high.push(this.low.pop());
+    if (this.high.size > this.low.size) {
+      this.low.push(this.high.pop());
+    }
   }
 
   findMedian() {
-    const sorted = [...this.nums].sort((a, b) => a - b);
-    const mid = sorted.length >> 1;
-    if (sorted.length % 2) return sorted[mid];
-    return (sorted[mid - 1] + sorted[mid]) / 2;
+    if (this.low.size > this.high.size) return this.low.peek();
+    return (this.low.peek() + this.high.peek()) / 2;
   }
 }
 
