@@ -1,17 +1,25 @@
-import heapq
+def count_le(matrix, target):
+    n = len(matrix)
+    count = 0
+    r, c = n - 1, 0
+    while r >= 0 and c < n:
+        if matrix[r][c] <= target:
+            count += r + 1
+            c += 1
+        else:
+            r -= 1
+    return count
 
 
 def kth_smallest(matrix, k):
-    n = len(matrix)
-    heap = []
-    for r in range(min(n, k)):
-        heap.append((matrix[r][0], r, 0))
-    heapq.heapify(heap)
-    for _ in range(k - 1):
-        val, r, c = heapq.heappop(heap)
-        if c + 1 < n:
-            heapq.heappush(heap, (matrix[r][c + 1], r, c + 1))
-    return heap[0][0]
+    lo, hi = matrix[0][0], matrix[-1][-1]
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if count_le(matrix, mid) >= k:
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
 
 
 if __name__ == "__main__":
