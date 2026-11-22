@@ -16,13 +16,14 @@ function findOrder(numCourses, prerequisites) {
     const node = queue[head];
     order.push(node);
     for (const next of graph[node]) {
-      indegree[next]--;
-      if (indegree[next] === 0) queue.push(next);
+      if (--indegree[next] === 0) queue.push(next);
     }
   }
-  return order;
+  return order.length === numCourses ? order : [];
 }
 
 console.log(findOrder(2, [[1, 0]]));
 console.log(findOrder(4, [[1, 0], [2, 0], [3, 1], [3, 2]]));
 console.log(findOrder(2, [[0, 1], [1, 0]]));
+console.log(findOrder(1, []));
+console.log(findOrder(3, []));
