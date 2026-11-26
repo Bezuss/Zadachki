@@ -1,16 +1,15 @@
 function leastInterval(tasks, n) {
-  const counts = {};
+  const counts = new Map();
   for (const t of tasks) {
-    counts[t] = (counts[t] || 0) + 1;
+    counts.set(t, (counts.get(t) || 0) + 1);
   }
-  const freqs = Object.values(counts);
+  const freqs = [...counts.values()];
   const maxFreq = Math.max(...freqs);
-  let maxCount = 0;
-  for (const f of freqs) {
-    if (f === maxFreq) maxCount++;
-  }
-  return (maxFreq - 1) * (n + 1) + maxCount;
+  const maxCount = freqs.filter((f) => f === maxFreq).length;
+  const slots = (maxFreq - 1) * (n + 1) + maxCount;
+  return Math.max(slots, tasks.length);
 }
 
 console.log(leastInterval(["A", "A", "A", "B", "B", "B"], 2));
 console.log(leastInterval(["A", "A", "A", "B", "B", "B"], 0));
+console.log(leastInterval(["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"], 2));
