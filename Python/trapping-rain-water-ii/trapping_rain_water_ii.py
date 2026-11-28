@@ -13,6 +13,14 @@ def trap_rain_water(grid):
                 heapq.heappush(heap, (grid[r][c], r, c))
                 visited[r][c] = True
     total = 0
+    while heap:
+        height, r, c = heapq.heappop(heap)
+        for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < rows and 0 <= nc < cols and not visited[nr][nc]:
+                visited[nr][nc] = True
+                total += height - grid[nr][nc]
+                heapq.heappush(heap, (max(height, grid[nr][nc]), nr, nc))
     return total
 
 
